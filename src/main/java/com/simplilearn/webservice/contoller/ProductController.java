@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.simplilearn.webservice.entity.Product;
+import com.simplilearn.webservice.exception.InvalidProductException;
+import com.simplilearn.webservice.exception.ProductNotFound;
 
 @RestController
 public class ProductController {
@@ -33,7 +35,7 @@ public class ProductController {
 				return product;
 			}
 		}
-		return null;
+		throw new ProductNotFound("Product not found with given id "+id);
 	}
 
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
@@ -43,7 +45,7 @@ public class ProductController {
 				return product;
 			}
 		}
-		return null;
+		throw new ProductNotFound("Product not found with given name '"+name +"'");
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -53,14 +55,21 @@ public class ProductController {
 				return product;
 			}
 		}
-		return null;
+		throw new ProductNotFound("Product not found with given text '"+name +"'");
 	}
 
 	// add product
 	@RequestMapping(value = "/products", method = RequestMethod.POST)
-	public List<Product> addProduct(@RequestBody Product product) {
-		products.add(product);
-		return products;
+	public List<Product> addProduct(@RequestBody(required=false) Product product) {
+		if(product!=null) {
+			if(product.getName()!=null) {
+				products.add(product);
+				return products;
+			}else {
+				throw new InvalidProductException("Product can not be created , required *name filed missing");
+			}
+		}
+		throw new InvalidProductException("Product can not be created , required fileds missing");
 	}
 
 	// update product
@@ -72,7 +81,7 @@ public class ProductController {
 				return product;
 			}
 		}
-		return null;
+		throw new ProductNotFound("Product not found with given id "+product.getId());
 	}
 	
 	// delete product
@@ -85,7 +94,7 @@ public class ProductController {
 				return remove;
 			}
 		}
-		return null;
+		throw new ProductNotFound("Product not found with given id "+id);
 	}
 	
 	//add default data when list is empty
