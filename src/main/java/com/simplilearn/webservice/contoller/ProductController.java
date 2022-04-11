@@ -24,8 +24,6 @@ public class ProductController {
 	@Autowired
 	ProductRepository productRepository;
 
-	List<Product> products = new ArrayList<Product>();
-
 	// get all products
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public List<Product> getProducts() {
