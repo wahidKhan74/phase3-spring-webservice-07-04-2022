@@ -97,6 +97,15 @@ public class Product {
 		this.isAvailable = isAvailable;
 		this.createAt = createAt;
 	}
+	
+	public Product(String name, double price, String description, boolean isAvailable, Date createAt) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.description = description;
+		this.isAvailable = isAvailable;
+		this.createAt = createAt;
+	}
 
 	@Override
 	public String toString() {
